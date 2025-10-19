@@ -1,7 +1,9 @@
 import graphene
 
+from alx_backend_graphql.crm_query import CRMQuery
 
-class Query(graphene.ObjectType):
+
+class Query(CRMQuery, graphene.ObjectType):
     hello = graphene.String(default_value="Hello, GraphQL!")
 
 
