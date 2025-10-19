@@ -75,12 +75,13 @@ class CreateCustomer(graphene.Mutation):
             # Validate phone
             validate_phone(input.phone)
 
-            # Create customer
-            customer = Customer.objects.create(
+            # Create customer instance
+            customer = Customer(
                 name=input.name,
                 email=input.email,
                 phone=input.phone or ''
             )
+            customer.save()
 
             return CreateCustomer(customer=customer, message="Customer created successfully")
 
@@ -113,12 +114,13 @@ class BulkCreateCustomers(graphene.Mutation):
                     # Validate phone
                     validate_phone(customer_data.phone)
 
-                    # Create customer
-                    customer = Customer.objects.create(
+                    # Create customer instance
+                    customer = Customer(
                         name=customer_data.name,
                         email=customer_data.email,
                         phone=customer_data.phone or ''
                     )
+                    customer.save()
                     created_customers.append(customer)
 
                 except ValidationError as e:
@@ -145,12 +147,13 @@ class CreateProduct(graphene.Mutation):
             if input.stock < 0:
                 raise ValidationError("Stock cannot be negative")
 
-            # Create product
-            product = Product.objects.create(
+            # Create product instance
+            product = Product(
                 name=input.name,
                 price=input.price,
                 stock=input.stock
             )
+            product.save()
 
             return CreateProduct(product=product)
 
@@ -187,12 +190,13 @@ class CreateOrder(graphene.Mutation):
                 except Product.DoesNotExist:
                     raise ValidationError(f"Invalid product ID: {product_id}")
 
-            # Create order
-            order = Order.objects.create(
+            # Create order instance
+            order = Order(
                 customer=customer,
                 order_date=input.order_date,
                 total_amount=total_amount
             )
+            order.save()
 
             # Associate products
             order.products.set(products)
