@@ -122,3 +122,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Add at the end of settings.py
+GRAPHENE = {
+    'SCHEMA': 'alx_backend_graphql.schema.schema'
+}
+
