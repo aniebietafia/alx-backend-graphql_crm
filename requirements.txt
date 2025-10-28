@@ -1,5 +1,6 @@
 asgiref==3.10.0
 Django==5.2.7
+django-cron==0.6.0
 django-filter==25.2
 graphene==3.4.3
 graphene-django==3.2.3
