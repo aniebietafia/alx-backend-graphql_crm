@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Navigate to the project directory (adjust path as needed)
+# Navigate to the project directory
 cd "$(dirname "$0")/../.." || exit
 
 # Execute Django shell command to delete inactive customers
