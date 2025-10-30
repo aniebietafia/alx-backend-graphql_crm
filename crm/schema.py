@@ -4,6 +4,7 @@ from graphene_django.filter import DjangoFilterConnectionField
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.db import transaction
+from django.db.models import F
 from decimal import Decimal
 import re
 from .models import Customer, Product, Order
@@ -190,6 +191,27 @@ class CreateOrder(graphene.Mutation):
             raise Exception(str(e))
 
 
+class UpdateLowStockProducts(graphene.Mutation):
+    products = graphene.List(ProductType)
+    message = graphene.String()
+
+    @transaction.atomic
+    def mutate(self, info):
+        # 1. Find products with stock < 10
+        low_stock_ids = list(Product.objects.filter(stock__lt=10).values_list('id', flat=True))
+
+        if not low_stock_ids:
+            return UpdateLowStockProducts(products=[], message="No products required restocking.")
+
+        # 2. Atomically increment stock by 10 using F() expression
+        Product.objects.filter(id__in=low_stock_ids).update(stock=F('stock') + 10)
+
+        # 3. Fetch the newly updated products to return them
+        updated_products = Product.objects.filter(id__in=low_stock_ids)
+        message = f"Successfully restocked {len(updated_products)} product(s)."
+
+        return UpdateLowStockProducts(products=updated_products, message=message)
+
 # Query with filtering support
 class Query(graphene.ObjectType):
     all_customers = DjangoFilterConnectionField(CustomerType, order_by=graphene.String())
@@ -221,3 +243,4 @@ class Mutation(graphene.ObjectType):
     bulk_create_customers = BulkCreateCustomers.Field()
     create_product = CreateProduct.Field()
     create_order = CreateOrder.Field()
+    update_low_stock_products = UpdateLowStockProducts.Field()
