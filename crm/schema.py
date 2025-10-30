@@ -7,8 +7,9 @@ from django.db import transaction
 from django.db.models import F
 from decimal import Decimal
 import re
-from crm.models import Customer, Product, Order
+from .models import Customer, Order
 from .filters import CustomerFilter, ProductFilter, OrderFilter
+from crm.models import Product
 
 
 # Object Types with Node interface for filtering
