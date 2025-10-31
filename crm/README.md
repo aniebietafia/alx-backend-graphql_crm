@@ -9,14 +9,18 @@ Before you begin, ensure you have the following installed on your system:
 - Git
 - Redis Server
 
-## Setup Instructions
+## Setup Steps
+1. Clone the Repository
+2. Install Redis
+3. Install Python Dependencies
+4. Run Database Migrations
 
+## Setup Instructions
 1. Clone the Repository
 ```bash
 git clone <your-repository-url>
 cd <your-project-directory>
 ```
-
 2. Install Redis: Redis is required as the message broker for Celery.
 - On macOS (using Homebrew):
 ```bash
@@ -30,21 +34,17 @@ sudo apt install redis-server
 sudo systemctl start redis-server
 sudo systemctl enable redis-server
 ```
-
 3. Install Python Dependencies: Install all required packages, including Django, Celery, and django-celery-beat.
 ```bash
 pip install -r requirements.txt
 ```
-
 4. Run Database Migrations
 This will create the necessary database tables, including those for Celery Beat.
 ```bash
 python manage.py migrate
 ```
 
-
 ## Running the Application and Services
-
 You need to run three separate processes in different terminal windows: the Django server, the Celery worker, and the Celery Beat scheduler.
 
 1. Terminal 1: Run the Django Server (Optional, for development)
