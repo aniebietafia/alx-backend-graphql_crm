@@ -10,10 +10,11 @@ Before you begin, ensure you have the following installed on your system:
 - Redis Server
 
 ## Setup Steps
-1. Clone the Repository
-2. Install Redis
-3. Install Python Dependencies
-4. Run Database Migrations
+1. Install Redis and dependencies
+2. Run migrations (python manage.py migrate)
+3. Start Celery worker (celery -A crm worker -l info).
+4. Start Celery Beat (celery -A crm beat -l info).
+5. Verify logs in /tmp/crm_report_log.txt.
 
 ## Setup Instructions
 1. Clone the Repository
@@ -21,7 +22,8 @@ Before you begin, ensure you have the following installed on your system:
 git clone <your-repository-url>
 cd <your-project-directory>
 ```
-2. Install Redis: Redis is required as the message broker for Celery.
+2. Install Redis and dependencies
+Redis is required as the message broker for Celery.
 - On macOS (using Homebrew):
 ```bash
 brew install redis
